@@ -100,7 +100,7 @@ THIS IS THE ACTUAL INDEX FILE, REPLACE THE OLD ONE WHEN APPLICABLE
         var container = document.getElementById('mfs');
         var mfsForm = document.createElement('form');
         mfsForm.id = 'mfsForm';
-/*
+
         // Iterate through the array of friends object and create a checkbox for each one.
         for(var i = 0; i < response.data.length; i++) {
           var friendItem = document.createElement('div');
@@ -110,7 +110,7 @@ THIS IS THE ACTUAL INDEX FILE, REPLACE THE OLD ONE WHEN APPLICABLE
           + '" />' + response.data[i].name;
           mfsForm.appendChild(friendItem);
         }
-        container.appendChild(mfsForm);
+        document.appendChild(mfsForm);
 
         var friendID = null;
         var firends = document.getElementByName('friends');
