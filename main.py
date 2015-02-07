@@ -42,6 +42,7 @@ def home():
 @app.route("/index2.html")
 def test():
   return render_template("index2.html")
+  
 @app.route("/createRose", methods=["POST"])
 def createRose():
   rose = Rose()
@@ -56,7 +57,6 @@ def addComment(roseid):
     return json.dumps(False)
   comment = request.form["comment"]
   rose.appendComment(comment)
-  db.session.add(rose)
   db.session.commit()
   return json.dumps(True)
 
