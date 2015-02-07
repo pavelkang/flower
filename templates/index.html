@@ -87,7 +87,7 @@
         'Thanks for logging in, ' + response.name + '!';
       });
 
-      var body = 'Testing JS SDK'
+      var body = 'Testing JS SDK' + Date.now();
       var userid, postid;
       FB.api('/me/feed', 'post', { message: body }, function(response) {
         if (!response || response.error) {
