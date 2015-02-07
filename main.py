@@ -47,12 +47,12 @@ def createRose():
 def addComment(roseid):
   rose = Rose.query.filter_by(ID=roseid).first()
   if not rose:
-    return json.dumps((False, "A rose with the given ID was not found in the database."))
+    return json.dumps(False)
   comment = request.form["comment"]
   rose.appendComment(comment)
   db.session.add(rose)
   db.session.commit()
-  return json.dumps((True, ""))
+  return json.dumps(True)
 
 @app.route("/<int:roseid>/comments")
 def getComments(roseid):
