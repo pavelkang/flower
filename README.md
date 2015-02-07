@@ -33,20 +33,20 @@ Comment: A POST request to /createRose creates a rose object in the database and
 
 ### Get Comments
 
-URL: /<roseid>/comments
+URL: /(roseid)/comments
 
 Method: GET
 
 Returns: string list
 
-Comment: A GET request to /<roseid>/comments returns a list of comments as strings associated with the particular roseid.
+Comment: A GET request to /(roseid)/comments returns a list of comments as strings associated with the particular roseid.
 
 ### Add Comment
 
-URL: /<roseid>/addComment
+URL: /(roseid)/addComment
 
 Method: POST
 
 Returns: bool
 
-Comment: A POST request to /<roseid>/addComment must include a "comment" paramter in order to succeed. Failure to do so triggers a 400-level HTTP error. A valid request attempts to add the value of the "comment" parameter to the database for the particular roseid. It returns a bool describing whether the operation succeeded.
+Comment: A POST request to /(roseid)/addComment must include a "comment" parameter in order to be valid. Failure to do so triggers a 400-level HTTP error. A valid request attempts to add the value of the "comment" parameter to the database for the particular roseid. It returns a bool describing whether the operation succeeded.
