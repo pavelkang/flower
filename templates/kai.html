@@ -525,8 +525,6 @@
          firstSlash = currUrl.indexOf("/", currUrl.indexOf("localhost"))
        }
        var id = currUrl.substring(firstSlash+1, currUrl.indexOf("/", firstSlash+1))
-       console.log(currUrl[firstSlash]);
-       console.log(id);
        xhr.open('GET', "/"+id+"/comments", true);
        xhr.onload = function() {
          console.log(xhr.response);
