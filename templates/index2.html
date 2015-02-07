@@ -78,6 +78,10 @@ THIS IS THE ACTUAL INDEX FILE, REPLACE THE OLD ONE WHEN APPLICABLE
       js = d.createElement(s); js.id = id;
       js.src = "//connect.facebook.net/en_US/sdk.js";
       fjs.parentNode.insertBefore(js, fjs);
+
+      but = d.createElement('button');
+      but.onclick = 'postTopLevel()';
+      but.innerHTML = 'Post Comment';
     }(document, 'script', 'facebook-jssdk'));
 
     // Here we run a very simple test of the Graph API after login is
@@ -119,8 +123,6 @@ THIS IS THE ACTUAL INDEX FILE, REPLACE THE OLD ONE WHEN APPLICABLE
   </fb:login-button>
 
   <div id="status">
-
-  <button onclick="postTopLevel()">Post Message!</button>
 
 </body>
 </html>
