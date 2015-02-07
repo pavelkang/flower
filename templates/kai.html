@@ -14,6 +14,7 @@
     <script src="{{url_for("static", filename="js/CanvasRenderer.js")}}"></script>
     <script src="{{url_for("static", filename="js/Bird.js")}}"></script>
     <script src="http://mrdoob.github.com/three.js/examples/fonts/helvetiker_regular.typeface.js"></script>
+    <script src="{{url_for("static", filename="js/domevent.js")}}"></script>
     <audio src="{{url_for("static", filename="music/canon.mp3")}}" autoplay loop></audio>
     <audio id="chirp" src="{{url_for("static", filename="music/chirp.wav")}}" autoplay loop volume="0"></audio>
     <script>
@@ -298,8 +299,8 @@
      var vid = document.getElementById("chirp");
      vid.volume = 0.2;
      var startDate = new Date().getTime();
-     var textMesh2;
-     var FS = 0.05, BS = 1, TS = 3, V=0.05;
+     var textMesh2, flower;
+     var FS = 0.05, BS = 1, TS = 3, V=0.05, TTS=0.001;
      var scene, camera, renderer, controls, texture_placeholder, birds, bird;
      var boid, boids;
      var textureFlare0, textureFlare2, textureFlare3;
@@ -360,7 +361,7 @@
        grassTex.repeat.x = 1;
        grassTex.repeat.y = 1;
        var groundMat = new THREE.MeshBasicMaterial({map:grassTex});
-       var groundGeo = new THREE.PlaneGeometry(4000,4000);
+       var groundGeo = new THREE.PlaneBufferGeometry(4000,4000);
        var ground = new THREE.Mesh(groundGeo,groundMat);
        ground.position.y = -1.9; //lower it 
        ground.rotation.x = -Math.PI/2; //-90 degrees around the xaxis 
@@ -416,9 +417,9 @@
        // Load flower
        var flowerLoader = new THREE.JSONLoader();
        loader.load("{{url_for('static', filename='js/red.js')}}", function (geom, mater) {
-	 var flower = new THREE.Mesh( geom, new THREE.MeshFaceMaterial(mater));
+	 flower = new THREE.Mesh( geom, new THREE.MeshFaceMaterial(mater));
          flower.scale.x = FS; flower.scale.y = FS; flower.scale.z = FS;
-         flower.position.y = 6; flower.position.z = 0; flower.position.x=0;
+         flower.position.y = 6; flower.position.z = -1; flower.position.x=0;
          flower.rotation.x = -Math.PI / 2;
 	 scene.add(flower);
        });
@@ -427,13 +428,13 @@
        loader.load("{{url_for('static', filename='js/book.js')}}", function (geom, mater) {
 	 var book = new THREE.Mesh( geom, new THREE.MeshFaceMaterial(mater));
          book.scale.x = BS; book.scale.y = BS; book.scale.z = BS;
-         book.position.y = 3.5; book.position.z = 1; book.position.x=0;
+         book.position.y = 3.5; book.position.z = 2; book.position.x=0;
 	 scene.add(book);
        });
      }
      function animate() {
        requestAnimationFrame(animate);
-       textMesh2.material.opacity = Math.max(0, 1-(1.0/5000.0)*(new Date().getTime() - startDate))
+       //textMesh2.material.opacity = Math.max(0, 1-(1.0/5000.0)*(new Date().getTime() - startDate))
        for ( var i = 0, il = birds.length; i < il; i++ ) {
 	 boid = boids[ i ];
 	 boid.run( boids );
@@ -481,15 +482,18 @@
      }
      function addText() {
        var material2 = new THREE.MeshPhongMaterial({
-         color: 0x00ff00
+         color: 0x000000
        });
-       var textGeom2 = new THREE.TextGeometry( 'Hello, World!', {
+       var textGeom2 = new THREE.TextGeometry( 'Hello, World! Happy Birthday!!!!!!', {
          font: 'helvetiker'
        });
        textMesh2 = new THREE.Mesh( textGeom2, material2 );
        textGeom2.computeBoundingBox();
        var textWidth2 = textGeom2.boundingBox.max.x - textGeom2.boundingBox.min.x;
-       textMesh2.position.set( -0.5 * textWidth2, 0, 0 );
+       textMesh2.position.set( 0, 3.8, 1 );
+       textMesh2.scale.x = TTS; textMesh2.scale.y = TTS; textMesh2.scale.z = TTS;
+       textMesh2.rotation.x = -Math.PI/2;
+       textMesh2.rotation.z = -Math.PI/6;
        scene.add( textMesh2 );
        textMesh2.material.transparent = true;
      }
