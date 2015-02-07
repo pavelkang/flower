@@ -155,10 +155,13 @@ THIS IS THE ACTUAL INDEX FILE, REPLACE THE OLD ONE WHEN APPLICABLE
                 }
                 console.log('4');
                 xmlhttp.open('POST', '/' + rose_id + '/addComment', true);
+
                 console.log('5');
+                xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
                 xmlhttp.send('comment=' + response.data[i].message);
               }
             }
+            comments_count = n_comments_count;
           }
           monitorCommentsOnPost(postid);
         });
