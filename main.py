@@ -32,7 +32,7 @@ db.create_all()
 def home():
   return render_template("index.html")
 
-@app.route("/createRose")
+@app.route("/createRose", methods=["POST"])
 def createRose():
   rose = Rose()
   db.session.add(rose)
