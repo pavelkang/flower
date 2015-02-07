@@ -137,18 +137,25 @@ THIS IS THE ACTUAL INDEX FILE, REPLACE THE OLD ONE WHEN APPLICABLE
           } else {
             console.log('Got comments: ' + response.data);
             var n_comments_count = response.data.length;
+            console.log('-1');
             if (n_comments_count > comments_count) {
+              console.log('0');
               for (var i = comments_count; i < n_comments_count; ++i) {
                 var xmlhttp = new XMLHttpRequest();
                 xmlhttp.onreadystatechange()=function()
                 {
+                  console.log('1');
                   if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+                    console.log('2');
                     console.log('Successfully added comment: ' + response.data[i].message);
                   } else {
+                    console.log('3');
                     console.log('Failed to added comment: ' + response.data[i].message);
                   }
                 }
+                console.log('4');
                 xmlhttp.open('POST', '/' + rose_id + '/addComment', true);
+                console.log('5');
                 xmlhttp.send('commment=' + response.data[i].message);
               }
             }
