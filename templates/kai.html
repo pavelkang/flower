@@ -14,6 +14,8 @@
     <script src="{{url_for("static", filename="js/CanvasRenderer.js")}}"></script>
     <script src="{{url_for("static", filename="js/Bird.js")}}"></script>
     <script src="http://mrdoob.github.com/three.js/examples/fonts/helvetiker_regular.typeface.js"></script>
+    <audio src="{{url_for("static", filename="music/canon.mp3")}}" autoplay loop></audio>
+    <audio id="chirp" src="{{url_for("static", filename="music/chirp.wav")}}" autoplay loop volume="0"></audio>
     <script>
 
      // Based on http://www.openprocessing.org/visuals/?visualID=6910
@@ -293,9 +295,11 @@
      }
     </script>
     <script>
+     var vid = document.getElementById("chirp");
+     vid.volume = 0.2;
      var startDate = new Date().getTime();
      var textMesh2;
-     var FS = 0.05, BS = 0.7, V=0.05;
+     var FS = 0.05, BS = 1, TS = 3, V=0.05;
      var scene, camera, renderer, controls, texture_placeholder, birds, bird;
      var boid, boids;
      var textureFlare0, textureFlare2, textureFlare3;
@@ -405,7 +409,7 @@
            map: THREE.ImageUtils.loadTexture('{{url_for("static", filename="img/wood.jpg")}}')
          });
          mesh = new THREE.Mesh(geometry, mat);
-         mesh.scale.x = 2; mesh.scale.y = 2; mesh.scale.z = 2; // scale         
+         mesh.scale.x = TS; mesh.scale.y = TS; mesh.scale.z = TS; // scale         
          scene.add( mesh );
          animate();
        } );
@@ -423,7 +427,7 @@
        loader.load("{{url_for('static', filename='js/book.js')}}", function (geom, mater) {
 	 var book = new THREE.Mesh( geom, new THREE.MeshFaceMaterial(mater));
          book.scale.x = BS; book.scale.y = BS; book.scale.z = BS;
-         book.position.y = 2.3; book.position.z = 1; book.position.x=-1;
+         book.position.y = 3.5; book.position.z = 1; book.position.x=0;
 	 scene.add(book);
        });
      }
