@@ -107,12 +107,12 @@
               console.log('Got post: ' + postid);
               console.log(response);
 
-            FB.api('/' + postid, 'delete', function(response) {
+            FB.api('/' + postid, 'DELETE', function(response) {
               if (!response || response.error) {
                 console.log('Error deleting post');
                 console.log(response);
               } else {
-                console.log('Trying to delete: ' + postid);
+                console.log('Deleting post: ' + postid);
                 console.log(response);
               }
             });
