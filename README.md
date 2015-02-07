@@ -7,7 +7,7 @@ Local Installation
 
 To run the app locally, install dependencies (ideally in a virtualenv) with
 
-`pip install requirements.txt`
+`pip install -r requirements.txt`
 
 Then you can run the server with
 
