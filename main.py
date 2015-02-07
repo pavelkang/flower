@@ -4,7 +4,9 @@ from flask.ext.sqlalchemy import SQLAlchemy
 
 # app configuration
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "TODO: put a MYSQL URI here"
+DBURI = "sqlite:///roses.db"
+# TODO: put a MYSQL DB URI here later
+app.config["SQLALCHEMY_DATABASE_URI"] = DBURI
 app.debug = True
 PORT = int(os.environ.get("PORT", 5000))
 
