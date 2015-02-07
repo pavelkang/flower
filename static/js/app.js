@@ -76,6 +76,7 @@ function onLogin() {
     console.log('Successful login for: ' + response.name);
     document.getElementById('status').innerHTML =
     'Thanks for logging in, ' + response.name + '!';
+    toast('Hi ' + response.name + ', you\'re logged in!', 2000, 'rounded');
   });
   pbutton.style.visibility = "visible";
 }
@@ -127,6 +128,22 @@ function monitorCommentsOnPost(postid)
   }, 3000);
 }
 
+function changeButton() {
+  pbutton.innerHTML = 'View Gram!';
+  pbutton.removeEventListener('click', postTopLevel)
+  pbutton.addEventListener('click', redirFB);
+}
+
+var url = null;
+
+function redirFB() {
+  if (!url) {
+    console.log('Redirect went wrong, url DNE');
+  } else {
+    window.open(url, '_blank');
+  }
+}
+
 // Post top level thread for the rosegram
 function postTopLevel() {
   var xmlhttp = new XMLHttpRequest();
@@ -134,8 +151,8 @@ function postTopLevel() {
   {
     if (xmlhttp.readyState==4 && xmlhttp.status==200) {
       rose_id = parseInt(xmlhttp.responseText, 10);
-      var url = 'http://rosegram.herokuapp.com/' + String(rose_id);
-      var content = 'Hey guys, I just created a birthday gift! It\'s live at: ' + url +'. Go check it out or comment below to add your message as well!';
+      url = 'http://rosegram.herokuapp.com/' + String(rose_id);
+      var content = 'I\'m creating an interactive rose gram using http://rosegram.herokuapp.com! Comment below to have you message added! The gram is live at: ' + url +'.';
       FB.api('/me/feed', 'post', { message : content }, function(response) {
         if (!response || response.error) {
           console.log('Error posting message');
@@ -146,6 +163,8 @@ function postTopLevel() {
           var userid = ids[0];
           var postid = ids[1];
           console.log('Post id is ' + String(postid));
+          toast('Post created!', 2000, 'rounded');
+          changeButton();
           monitorCommentsOnPost(postid);
         }
       });
