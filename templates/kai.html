@@ -22,6 +22,9 @@
      html {
        font-family: 'Kaushan Script', cursive;
      }
+     .sub {
+       padding-top: 2%;
+     }
      #container {
        font-family: 'Kaushan Script', cursive;
        background-color: transparent;
@@ -569,7 +572,7 @@
      function displayComment(comments) {
        var result = "";
        for (var i=0; i<comments.length; i++) {
-         result += "<div>" + comments[i] + "</div>";
+         result += "<div class='sub'>" + comments[i] + "</div>";
        }
        var c = document.getElementById("container")
        c.style.visibility = "visible"
