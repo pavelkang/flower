@@ -8,11 +8,11 @@
   </head>
   <body>
     <button id="g">hello</button>
-    <script src="build/three.js"></script>
-    <script src="js/controls/OrbitControls.js"></script>
-    <script src="js/renderers/Projector.js"></script>
-    <script src="js/renderers/CanvasRenderer.js"></script>
-    <script src="obj/Bird.js"></script>
+    <script src="{{url_for("static", filename="js/three.js")}}"></script>
+    <script src="{{url_for("static", filename="js/OrbitControls.js")}}"></script>
+    <script src="{{url_for("static", filename="js/Projector.js")}}"></script>
+    <script src="{{url_for("static", filename="js/CanvasRenderer.js")}}"></script>
+    <script src="{{url_for("static", filename="js/Bird.js")}}"></script>
     <script src="http://mrdoob.github.com/three.js/examples/fonts/helvetiker_regular.typeface.js"></script>
     <script>
 
@@ -306,12 +306,12 @@
      context.fillStyle = 'rgb( 200, 200, 200 )';
      context.fillRect( 0, 0, texture_placeholder.width, texture_placeholder.height );
      var skies = [
-       loadTexture( 'skybox/rightax2.jpg' ), // right
-       loadTexture( 'skybox/leftax2.jpg' ), // left
-       loadTexture( 'skybox/topax2.jpg' ), // top
-       loadTexture( 'skybox/topax3.jpg' ), // bottom
-       loadTexture( 'skybox/frontax2.jpg' ), // front
-       loadTexture( 'skybox/backax2.jpg' )  // back      
+       loadTexture( '{{url_for("static", filename="img/rightax2.jpg")}}' ), // right
+       loadTexture( '{{url_for("static", filename="img/leftax2.jpg")}}' ), // left
+       loadTexture( '{{url_for("static", filename="img/topax2.jpg")}}' ), // top
+       loadTexture( '{{url_for("static", filename="img/topax3.jpg")}}' ), // bottom
+       loadTexture( '{{url_for("static", filename="img/frontax2.jpg")}}' ), // front
+       loadTexture( '{{url_for("static", filename="img/backax2.jpg")}}' )  // back      
      ];
      init();
      addText();
@@ -350,7 +350,7 @@
        });
        //add ground
        var w = 10000, h = 5000;
-       var grassTex = THREE.ImageUtils.loadTexture('ground.jpg');
+       var grassTex = THREE.ImageUtils.loadTexture('{{url_for("static", filename="img/ground.jpg")}}');
        grassTex.wrapS = THREE.RepeatWrapping;
        grassTex.wrapT = THREE.RepeatWrapping;
        grassTex.repeat.x = 1;
@@ -382,9 +382,9 @@
        scene.add( dirLight );
        dirLight.color.setHSL( 0.1, 0.7, 0.5 );
        // lens flares
-       textureFlare0 = THREE.ImageUtils.loadTexture( "lensflare/lensflare0.png" );
-       textureFlare2 = THREE.ImageUtils.loadTexture( "lensflare/lensflare2.png" );
-       textureFlare3 = THREE.ImageUtils.loadTexture( "lensflare/lensflare3.png" );
+       textureFlare0 = THREE.ImageUtils.loadTexture( "{{url_for('static', filename='lensflare/lensflare0.png')}}");
+       textureFlare2 = THREE.ImageUtils.loadTexture( "{{url_for('static', filename='lensflare/lensflare2.png')}}" );
+       textureFlare3 = THREE.ImageUtils.loadTexture( "{{url_for('static', filename='lensflare/lensflare3.png')}}" );
        addLight( 0.55, 0.9, 0.5, 5000, 100, -1000 );
        addLight( 0.08, 0.8, 0.5,    0, 100, -1000 );
        addLight( 0.995, 0.5, 0.9, 5000, 100, -1000 );
@@ -400,9 +400,9 @@
        scene.fog.color.setHSL( 0.51, 0.4, 0.01 );
        // Load Table
        var loader = new THREE.JSONLoader();
-       loader.load( "table.js", function ( geometry, materials ) {
+       loader.load( "{{url_for('static', filename='js/table.js')}}", function ( geometry, materials ) {
          var mat = new THREE.MeshLambertMaterial({
-           map: THREE.ImageUtils.loadTexture('wood.jpg')
+           map: THREE.ImageUtils.loadTexture('{{url_for("static", filename="img/wood.jpg")}}')
          });
          mesh = new THREE.Mesh(geometry, mat);
          mesh.scale.x = 2; mesh.scale.y = 2; mesh.scale.z = 2; // scale         
@@ -411,7 +411,7 @@
        } );
        // Load flower
        var flowerLoader = new THREE.JSONLoader();
-       loader.load("red.js", function (geom, mater) {
+       loader.load("{{url_for('static', filename='js/red.js')}}", function (geom, mater) {
 	 var flower = new THREE.Mesh( geom, new THREE.MeshFaceMaterial(mater));
          flower.scale.x = FS; flower.scale.y = FS; flower.scale.z = FS;
          flower.position.y = 6; flower.position.z = 0; flower.position.x=0;
@@ -420,7 +420,7 @@
        });
        // Load book
        var bookLoader = new THREE.JSONLoader();
-       loader.load("book.js", function (geom, mater) {
+       loader.load("{{url_for('static', filename='js/book.js')}}", function (geom, mater) {
 	 var book = new THREE.Mesh( geom, new THREE.MeshFaceMaterial(mater));
          book.scale.x = BS; book.scale.y = BS; book.scale.z = BS;
          book.position.y = 2.3; book.position.z = 1; book.position.x=-1;
