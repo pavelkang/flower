@@ -98,8 +98,10 @@
           var ids = response['id'].split('_');
           userid = ids[0];
           postid = ids[1];
+          console.log(postid);
         }
       });
+      console.log(postid);
       FB.api('/' + postid, function(response) {
         console.log('Got post: ' + postid);
         console.log(response);
