@@ -31,9 +31,10 @@ class Rose(db.Model):
 
   def __str__(self):
     return "%s: " + ", ".join(self.comments.split("|"))
-
-if not os.path.exists('/tmp/roses.db'):
+try:
   db.create_all()
+except:
+  pass
   
 # routing
 @app.route("/")
