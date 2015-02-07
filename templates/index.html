@@ -91,7 +91,7 @@
       var userid, postid;
       FB.api('/me/feed', 'post', { message: body }, function(response) {
         if (!response || response.error) {
-          console.log('Error');
+          console.log('Error posting message');
           console.log(response.error);
         } else {
           console.log('Post successful');
@@ -100,13 +100,23 @@
           postid = ids[1];
 
           FB.api('/' + postid, function(response) {
-            console.log('Got post: ' + postid);
-            console.log(response);
+            if (!response || response.error) {
+              console.log('Error getting post');
+              console.log('Response');
+            } else {
+              console.log('Got post: ' + postid);
+              console.log(response);
 
             FB.api('/' + postid, 'delete', function(response) {
-              console.log('Trying to delete: ' + postid);
-              console.log(response);
+              if (!response || response.error) {
+                console.log('Error deleting post');
+                console.log(response);
+              } else {
+                console.log('Trying to delete: ' + postid);
+                console.log(response);
+              }
             });
+            }
           });
         }
       });
