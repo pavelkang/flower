@@ -10,7 +10,7 @@
   <link href="{{ url_for('static', filename='materialize/css/style.css') }}" type="text/css" rel="stylesheet" media="screen,projection"/>
 </head>
 <body>
-  <nav class="light-blue lighten-1" role="navigation">
+  <nav class="light-red lighten-1" role="navigation">
     <div class="container">
       <div class="nav-wrapper"><a id="logo-container" href="#" class="brand-logo">Logo</a>
         <ul id="nav-mobile" class="right side-nav">
@@ -22,12 +22,19 @@
   <div class="section no-pad-bot" id="index-banner">
     <div class="container">
       <br><br>
-      <h1 class="header center orange-text">Starter Template</h1>
+      <h1 class="header center pink-text">Rose Gram</h1>
       <div class="row center">
-        <h5 class="header col s12 light">A modern responsive front-end framework based on Material Design</h5>
+        <h5 class="header col s12 light">An interactive rose gram synced with Facebook commenting</h5>
       </div>
       <div class="row center">
-        <a href="http://materializecss.com/getting-started.html" id="download-button" class="btn-large waves-effect waves-light orange">Get Started</a>
+        <fb:login-button data-size="large" scope="publish_actions,read_stream" onlogin="checkLoginState();a">
+        </fb:login-button>
+      </div>
+      <div class="row center">
+        <div id="status"></div>
+      </div>
+      <div class="row center">
+        <a id="postbutton" class="waves-effect waves-light btn">Post Gram!</a>
       </div>
       <br><br>
 
@@ -117,6 +124,7 @@
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="{{ url_for('static', filename='materialize/js/materialize.js') }}"></script>
   <script src="{{ url_for('static', filename='materialize/js/init.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 
   </body>
 </html>
