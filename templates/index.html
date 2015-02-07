@@ -89,7 +89,7 @@
 
       var body = 'Testing JS SDK ' + Date.now().toString();
       var comment = 'Testing comment ' + Date.now().toString();
-      var userid, postid;
+
       FB.api('/me/feed', 'post', { message: body }, function(response) {
         if (!response || response.error) {
           console.log('Error posting message');
@@ -97,38 +97,47 @@
         } else {
           console.log('Post successful');
           var ids = response['id'].split('_');
-          userid = ids[0];
-          postid = ids[1];
+          var userid = ids[0];
+          var postid = ids[1];
 
-          FB.api('/' + postid, 'get', function(response) {
+          FB.api('/' + postid + '/comments', 'post', { message: comment },
+                 function(response) {
             if (!response || response.error) {
-              console.log('Error getting post');
-              console.log('Response');
+              console.log('Error commenting: ' + postid);
+              console.log(response);
             } else {
-              console.log('Got post: ' + postid);
+              console.log('Posted comment');
               console.log(response);
 
-            /* SOMETHING WRONG
-            FB.api('/' + postid, 'delete', function(response) {
-              if (!response || response.error) {
-                console.log('Error deleting post: ' + postid);
-                console.log(response);
-              } else {
-                console.log('Deleting post: ' + postid);
-                console.log(response);
-              }
-            });
-            */
-            FB.api('/' + postid + '/comments', 'post', { message: comment },
-                   function(response) {
-              if (!response || response.error) {
-                console.log('Error commenting: ' + postid);
-                console.log(response);
-              } else {
-                console.log('Posted comment');
-                console.log(response);
-              }
-            });
+              FB.api('/' + postid, 'get', function(response) {
+                if (!response || response.error) {
+                  console.log('Error getting post');
+                  console.log('Response');
+                } else {
+                  console.log('Got post: ' + postid);
+                  console.log(response);
+/*
+                  FB.api(postid, 'delete', function(response) {
+                    if (!response || response.error) {
+                      console.log('Error deleting post: ' + postid);
+                      console.log(response);
+                    } else {
+                      console.log('Deleting post: ' + postid);
+                      console.log(response);
+                    }
+                  });
+                }
+              });
+*/
+              FB.api('/' + postid + '/comments', 'get', function(response) {
+                if (!response || response.error) {
+                  console.log('Error getting post');
+                  console.log('Response');
+                } else {
+                  console.log('Got post: ' + postid);
+                  console.log(response);
+                }
+              });
             }
           });
         }
