@@ -1,10 +1,14 @@
-import os
+import os, json
+from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for
 from flask.ext.sqlalchemy import SQLAlchemy
 
 # app configuration
 app = Flask(__name__)
-DBURI = "sqlite:///roses.db"
+if os.environ.get("ON_HEROKU", False):
+  DBURI = "sqlite:////tmp/roses.db"
+else:
+  DBURI = "sqlite:///roses.db"
 # TODO: put a MYSQL DB URI here later
 app.config["SQLALCHEMY_DATABASE_URI"] = DBURI
 app.debug = True
@@ -18,6 +22,13 @@ class Rose(db.Model):
   comments = db.Column(db.String(2**30))
   date = db.Column(db.DateTime())
   
+  def __init__(self):
+    self.comments = ""
+    self.date = datetime.utcnow()
+
+  def appendComment(self, comment):
+    self.comments += (comment + "|")
+
   def __str__(self):
     return "%s: " + ", ".join(self.comments.split("|"))
 
@@ -28,9 +39,38 @@ db.create_all()
 def home():
   return render_template("index.html")
 
+<<<<<<< HEAD
 @app.route("/index2.html")
 def test():
   return render_template("index2.html")
+=======
+@app.route("/createRose", methods=["POST"])
+def createRose():
+  rose = Rose()
+  db.session.add(rose)
+  db.session.commit()
+  return json.dumps(rose.ID)
+
+@app.route("/<int:roseid>/addComment", methods=["POST"])
+def addComment(roseid):
+  rose = Rose.query.filter_by(ID=roseid).first()
+  if not rose:
+    return json.dumps(False)
+  comment = request.form["comment"]
+  rose.appendComment(comment)
+  db.session.add(rose)
+  db.session.commit()
+  return json.dumps(True)
+
+@app.route("/<int:roseid>/comments")
+def getComments(roseid):
+  rose = Rose.query.filter_by(ID=roseid).first()
+  if not rose:
+    commentsList = None
+  else:
+    commentsList = str(rose.comments[:-1]).split("|")
+  return json.dumps(commentsList)
+>>>>>>> ac4ca232b34e6f91852c2745aef2b8ed33568607
 
 if __name__ == "__main__":
   app.run(port = PORT)
