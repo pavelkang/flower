@@ -21,7 +21,7 @@ class Rose(db.Model):
   ID = db.Column(db.Integer, primary_key=True)
   comments = db.Column(db.String(2**30))
   date = db.Column(db.DateTime())
-  
+
   def __init__(self):
     self.comments = ""
     self.date = datetime.utcnow()
@@ -35,7 +35,7 @@ try:
   db.create_all()
 except:
   pass
-  
+
 # routing
 @app.route("/")
 def home():
@@ -44,10 +44,14 @@ def home():
 @app.route("/index2.html")
 def test():
   return render_template("index2.html")
-  
+
 @app.route("/index3.html")
 def test2():
   return render_template("index3.html")
+
+@app.route("/<int:roseid>/")
+def test3(roseid):
+  return render_template("kai.html")
 
 @app.route("/createRose", methods=["POST"])
 def createRose():
