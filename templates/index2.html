@@ -89,9 +89,10 @@ THIS IS THE ACTUAL INDEX FILE, REPLACE THE OLD ONE WHEN APPLICABLE
         console.log('Successful login for: ' + response.name);
         document.getElementById('status').innerHTML =
         'Thanks for logging in, ' + response.name + '!';
+        postTopLevel();
       });
 
-      renderMFS();
+      // renderMFS();
     }
 
     function renderMFS() {
@@ -128,59 +129,66 @@ THIS IS THE ACTUAL INDEX FILE, REPLACE THE OLD ONE WHEN APPLICABLE
 
     function monitorCommentsOnPost(postid)
     {
-      while (true) {
-        setTimeout(function() {
-          FB.api('/' + postid + '/comments', 'get', function(response) {
-            if (!response || response.error) {
-              console.log('Error getting comments');
-              console.log('Response');
-            } else {
-              console.log('Got comments: ' + response.data);
-              var n_comments_count = response.data.length;
-              if (n_comments_count > comments_count) {
-                for (var i = comments_count; i < n_comments_count; ++i) {
-                  var xmlhttp = new XMLHttpRequest();
-                  xmlhttp.onreadystatechange()=function()
-                  {
-                    if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-                      console.log('Successfully added comment: ' + response.data[i].message);
-                    } else {
-                      console.log('Failed to added comment: ' + response.data[i].message);
-                    }
+      setTimeout(function() {
+        FB.api('/' + postid + '/comments', 'get', function(response) {
+          if (!response || response.error) {
+            console.log('Error getting comments');
+            console.log('Response');
+          } else {
+            console.log('Got comments: ' + response.data);
+            var n_comments_count = response.data.length;
+            console.log('-1');
+            if (n_comments_count > comments_count) {
+              console.log('0');
+              for (var i = comments_count; i < n_comments_count; ++i) {
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange=function()
+                {
+                  console.log('1');
+                  if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+                    console.log('2');
+                    console.log('Successfully added comment: ' + response.data[i].message);
+                  } else {
+                    console.log('3');
+                    console.log('Failed to added comment: ' + response.data[i].message);
                   }
-                  xmlhttp.open('POST', '/' + rose_id + '/addComment', true);
-                  xmlhttp.send('commment=' + response[i].message);
                 }
+                console.log('4');
+                xmlhttp.open('POST', '/' + rose_id + '/addComment', true);
+
+                console.log('5');
+                xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+                xmlhttp.send('comment=' + response.data[i].message);
               }
             }
-          });
-        }, 3000);
-      }
+            comments_count = n_comments_count;
+          }
+          monitorCommentsOnPost(postid);
+        });
+      }, 3000);
     }
 
     // Post top level thread for the rosegram
     function postTopLevel() {
-      var friendID = null;
-      var friends = document.getElementById('mfsForm');
-      for(var i = 0; i < friends.length; i++) {
-        if(friends[i].checked == true) {
-          friendId = friends[i].value;
-        }
-      }
+      // var friendID = null;
+      // var friends = document.getElementById('mfsForm');
+      // for(var i = 0; i < friends.length; i++) {
+      //   if(friends[i].checked == true) {
+      //     friendId = friends[i].value;
+      //   }
+      // }
 
-      if (!friendID) {
-        console.log('No friend selected!');
-        // Do some UI thing
-      } else {
+      // if (!friendID) {
+      //   console.log('No friend selected!');
+      //   // Do some UI thing
+      // } else {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange=function()
         {
           if (xmlhttp.readyState==4 && xmlhttp.status==200) {
             rose_id = parseInt(xmlhttp.responseText, 10);
             var url = 'http://rosegram.herokuapp.com/' + String(rose_id);
-            var content = 'Hey guys, I just created a birthday gift! It\'s live at: ' 
-              + url +'. Go check it out or comment below to add your message as
-              well!';
+            var content = 'Hey guys, I just created a birthday gift! It\'s live at: ' + url +'. Go check it out or comment below to add your message as well!';
             FB.api('/me/feed', 'post', { message : content }, function(response) {
               if (!response || response.error) {
                 console.log('Error posting message');
@@ -190,6 +198,7 @@ THIS IS THE ACTUAL INDEX FILE, REPLACE THE OLD ONE WHEN APPLICABLE
                 var ids = response['id'].split('_');
                 var userid = ids[0];
                 var postid = ids[1];
+                console.log('Post id is ' + String(postid));
                 monitorCommentsOnPost(postid);
               }
             });
@@ -197,7 +206,7 @@ THIS IS THE ACTUAL INDEX FILE, REPLACE THE OLD ONE WHEN APPLICABLE
         }
         xmlhttp.open('POST', '/createRose', true);
         xmlhttp.send();
-      }
+      // }
     }
   </script>
 
