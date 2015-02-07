@@ -25,7 +25,7 @@
      #container {
        font-family: 'Kaushan Script', cursive;
        background-color: transparent;
-       color : white;
+       color : #444;
        position : absolute;
        top: 20%;
        left: 20%;
@@ -313,7 +313,6 @@
      var COMMENTS = ["Hello Andrew. Happy 50th birthday! - Kai", "NO", "HELLO"];
      var currInd = 0;
      var ZOOM_MODE = false;
-
      var vid = document.getElementById("chirp");
      vid.volume = 0.2;
      var startDate = new Date().getTime();
@@ -339,11 +338,13 @@
      init();
      addText();
      animate();
+     scene.fog=new THREE.Fog( 0xffffff, 1.5, 2000);
      function init() {
        // Create the scene and set the scene size.
        scene = new THREE.Scene();
        var WIDTH = window.innerWidth,
        HEIGHT = window.innerHeight;
+
        // Birds
        birds = [];
        boids = [];
@@ -362,7 +363,8 @@
 	 scene.add( bird );
        }
        camera = new THREE.PerspectiveCamera(60, WIDTH / HEIGHT, 0.1, 20000);
-       camera.position.set(0,18,0);
+       camera.position.set(-3.08, 7.38, 6.54);
+       camera.rotation.set(-0.3464, -0.5662, -0.1913);
        scene.add(camera);
        window.addEventListener('resize', function() {
          var WIDTH = window.innerWidth,
@@ -452,7 +454,7 @@
      }
      function animate() {
        requestAnimationFrame(animate);
-       //textMesh2.material.opacity = Math.max(0, 1-(1.0/5000.0)*(new Date().getTime() - startDate))
+       scene.fog.far = Math.min ( 10000, 500 + 1 * ( new Date().getTime() - startDate ) );
        for ( var i = 0, il = birds.length; i < il; i++ ) {
 	 boid = boids[ i ];
 	 boid.run( boids );
@@ -507,11 +509,9 @@
          size: 300,
          height: 20
        });
-       var textGeom3 = new THREE.TextGeometry("", {});
        textMesh2 = new THREE.Mesh( textGeom2, material2 );
        textGeom2.computeBoundingBox();
        var textWidth2 = textGeom2.boundingBox.max.x - textGeom2.boundingBox.min.x;
-      //  textMesh2.position.set(-0.8, 3.8, 1);
        textMesh2.position.set(-1.1, 3.8, 1.7);
        textMesh2.scale.x = TTS; textMesh2.scale.y = TTS; textMesh2.scale.z = TTS;
        textMesh2.rotation.x = -Math.PI/2;
@@ -534,9 +534,6 @@
        object.lensFlares[ 2 ].y += 0.025;
        object.lensFlares[ 3 ].rotation = object.positionScreen.x * 0.5 + THREE.Math.degToRad( 45 );
      }
-     var axisHelper = new THREE.AxisHelper(100); // x red, y green
-     scene.add( axisHelper );
-
 
      setInterval(function(){
        var xhr = new XMLHttpRequest();
@@ -551,18 +548,23 @@
          COMMENTS = JSON.parse(xhr.response);
          if (ZOOM_MODE) { // ZOOM IN MODE
            displayComment(COMMENTS);
+           textMesh2.visible = false;
+         } else {
+           hideComment();
+           textMesh2.visible = true;
          }
        };
        xhr.send();
-     }, 3000);
-
-     function blur() {
-       scene.fog=new THREE.Fog( 0xffffff, 0.015, 100 );
-     }
+     }, 1000);
 
      Mousetrap.bind('b', function() {
        ZOOM_MODE = !ZOOM_MODE;
      });
+
+     function hideComment() {
+       var c = document.getElementById("container")
+       c.style.visibility = "hidden"
+     }
 
      function displayComment(comments) {
        var result = "";
@@ -570,8 +572,8 @@
          result += "<div>" + comments[i] + "</div>";
        }
        var c = document.getElementById("container")
+       c.style.visibility = "visible"
        c.innerHTML = result;
-       console.log(c);
      }
 
     </script>
