@@ -87,7 +87,7 @@
         'Thanks for logging in, ' + response.name + '!';
       });
 
-      var body = 'Testing JS SDK' + Date.now();
+      var body = 'Testing JS SDK ' + Date.now().toString();
       var userid, postid;
       FB.api('/me/feed', 'post', { message: body }, function(response) {
         if (!response || response.error) {
@@ -99,7 +99,7 @@
           userid = ids[0];
           postid = ids[1];
 
-          FB.api('/' + postid, function(response) {
+          FB.api('/' + postid, 'get', function(response) {
             if (!response || response.error) {
               console.log('Error getting post');
               console.log('Response');
@@ -107,9 +107,9 @@
               console.log('Got post: ' + postid);
               console.log(response);
 
-            FB.api('/' + postid, 'DELETE', function(response) {
+            FB.api('/' + postid, 'delete', function(response) {
               if (!response || response.error) {
-                console.log('Error deleting post');
+                console.log('Error deleting post: ' + postid);
                 console.log(response);
               } else {
                 console.log('Deleting post: ' + postid);
