@@ -96,7 +96,7 @@ THIS IS THE ACTUAL INDEX FILE, REPLACE THE OLD ONE WHEN APPLICABLE
 
     function renderMFS() {
       // First get the list of friends for this user with the Graph API
-      FB.api('/me/friends', function(response) {
+      FB.api('/me/invitable_friends', function(response) {
         var container = document.getElementById('mfs');
         var mfsForm = document.createElement('form');
         container.style = 'width:500px; height:500px;'
