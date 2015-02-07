@@ -161,18 +161,18 @@ THIS IS THE ACTUAL INDEX FILE, REPLACE THE OLD ONE WHEN APPLICABLE
 
     // Post top level thread for the rosegram
     function postTopLevel() {
-      var friendID = null;
-      var friends = document.getElementById('mfsForm');
-      for(var i = 0; i < friends.length; i++) {
-        if(friends[i].checked == true) {
-          friendId = friends[i].value;
-        }
-      }
+      // var friendID = null;
+      // var friends = document.getElementById('mfsForm');
+      // for(var i = 0; i < friends.length; i++) {
+      //   if(friends[i].checked == true) {
+      //     friendId = friends[i].value;
+      //   }
+      // }
 
-      if (!friendID) {
-        console.log('No friend selected!');
-        // Do some UI thing
-      } else {
+      // if (!friendID) {
+      //   console.log('No friend selected!');
+      //   // Do some UI thing
+      // } else {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange=function()
         {
@@ -196,7 +196,7 @@ THIS IS THE ACTUAL INDEX FILE, REPLACE THE OLD ONE WHEN APPLICABLE
         }
         xmlhttp.open('POST', '/createRose', true);
         xmlhttp.send();
-      }
+      // }
     }
   </script>
 
