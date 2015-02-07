@@ -77,9 +77,12 @@ function onLogin() {
     document.getElementById('status').innerHTML =
     'Thanks for logging in, ' + response.name + '!';
   });
+  pbutton.style.visibility = "visible";
 }
 
-document.getElementById('postbutton').addEventListener("click", postTopLevel);
+var pbutton = document.getElementById('postbutton');
+pbutton.addEventListener("click", postTopLevel);
+pbutton.style.visiblity = "hidden";
 
 var comments_count = 0; 
 
@@ -150,5 +153,4 @@ function postTopLevel() {
   }
   xmlhttp.open('POST', '/createRose', true);
   xmlhttp.send();
-  // }
 }
