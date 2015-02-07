@@ -20,7 +20,11 @@ class Rose(db.Model):
   date = db.Column(db.DateTime())
   
   def __init__(self):
+    self.comments = ""
     self.date = datetime.utcnow()
+
+  def appendComment(self, comment):
+    self.comments += (comment + "|")
 
   def __str__(self):
     return "%s: " + ", ".join(self.comments.split("|"))
@@ -39,6 +43,25 @@ def createRose():
   db.session.commit()
   return json.dumps(rose.ID)
 
+@app.route("/<int:roseid>/addComment", methods=["POST"])
+def addComment(roseid):
+  rose = Rose.query.filter_by(ID=roseid).first()
+  if not rose:
+    return json.dumps((False, "A rose with the given ID was not found in the database."))
+  comment = request.form["comment"]
+  rose.appendComment(comment)
+  db.session.add(rose)
+  db.session.commit()
+  return json.dumps((True, ""))
+
+@app.route("/<int:roseid>/comments")
+def getComments(roseid):
+  rose = Rose.query.filter_by(ID=roseid).first()
+  if not rose:
+    commentsList = None
+  else:
+    commentsList = str(rose.comments[:-1]).split("|")
+  return json.dumps(commentsList)
 
 if __name__ == "__main__":
   app.run(port = PORT)
