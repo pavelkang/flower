@@ -112,25 +112,25 @@ THIS IS THE ACTUAL INDEX FILE, REPLACE THE OLD ONE WHEN APPLICABLE
         }
         container.appendChild(mfsForm);
 
-        var friendID = null;
-        var firends = document.getElementByName('friends');
-        for(var i = 0; i < friends.length; i++) {
-          if(friends[i].checked == true) {
-            friendId = friends[i].value;
-          }
-        }
-
         // Create a button to send the Request(s)
         var sendButton = document.createElement('input');
         sendButton.type = 'button';
         sendButton.value = 'Post Rose Gram!';
-        sendButton.onclick = postTopLevel(friendID);
+        sendButton.onclick = postTopLevel();
         mfsForm.appendChild(sendButton);
       });
     }
 
     // Post top level thread for the rosegram
-    function postTopLevel(friendID) {
+    function postTopLevel() {
+      var friendID = null;
+      var firends = document.getElementByName('mfsForm');
+      for(var i = 0; i < friends.length; i++) {
+        if(friends[i].checked == true) {
+          friendId = friends[i].value;
+        }
+      }
+
       if (!friendID) {
         console.log('No friend selected!');
         // Do some UI thing
