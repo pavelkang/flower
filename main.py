@@ -39,7 +39,7 @@ except:
 # routing
 @app.route("/")
 def home():
-  return render_template("index.html")
+  return render_template("landing.html")
 
 @app.route("/index2.html")
 def test():
