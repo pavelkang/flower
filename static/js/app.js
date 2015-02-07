@@ -130,7 +130,8 @@ function monitorCommentsOnPost(postid)
 
 function changeButton() {
   pbutton.innerHTML = 'View Gram!';
-  pbutton.addListener('click', redirFB);
+  pbutton.removeEventListener('click', postTopLevel)
+  pbutton.addEventListener('click', redirFB);
 }
 
 var url = null;
