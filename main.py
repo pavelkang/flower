@@ -5,7 +5,10 @@ from flask.ext.sqlalchemy import SQLAlchemy
 
 # app configuration
 app = Flask(__name__)
-DBURI = "sqlite:///roses.db"
+if os.environ.get("ON_HEROKU", False):
+  DBURI = "sqlite:////tmp/roses.db"
+else:
+  DBURI = "sqlite:///roses.db"
 # TODO: put a MYSQL DB URI here later
 app.config["SQLALCHEMY_DATABASE_URI"] = DBURI
 app.debug = True
@@ -36,6 +39,9 @@ db.create_all()
 def home():
   return render_template("index.html")
 
+@app.route("/index2.html")
+def test():
+  return render_template("index2.html")
 @app.route("/createRose", methods=["POST"])
 def createRose():
   rose = Rose()
