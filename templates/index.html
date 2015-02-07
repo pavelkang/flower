@@ -88,15 +88,22 @@
       });
 
       var body = 'Testing JS SDK'
+      var userid, postid;
       FB.api('/me/feed', 'post', { message: body }, function(response) {
         if (!response || response.error) {
           console.log('Error');
           console.log(response.error);
         } else {
           console.log('Post successful');
-          console.log(response);
+          var ids = response['id'].split('_');
+          userid = ids[0];
+          postid = ids[1];
         }
       });
+      FB.api('/' + postid, function(response) {
+        console.log('Got post: ' + postid);
+        console.log(response);
+      }
     }
   </script>
 
