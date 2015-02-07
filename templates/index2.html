@@ -99,6 +99,7 @@ THIS IS THE ACTUAL INDEX FILE, REPLACE THE OLD ONE WHEN APPLICABLE
       FB.api('/me/friends', function(response) {
         var container = document.getElementById('mfs');
         var mfsForm = document.createElement('form');
+        container.style = 'width
         mfsForm.id = 'mfsForm';
 
         console.log(response);
@@ -119,7 +120,7 @@ THIS IS THE ACTUAL INDEX FILE, REPLACE THE OLD ONE WHEN APPLICABLE
         sendButton.type = 'button';
         sendButton.value = 'Post Rose Gram!';
         sendButton.onclick = 'postTopLevel()';
-        mfsForm.appendChild(sendButton);
+        container.appendChild(sendButton);
       });
     }
 
