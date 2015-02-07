@@ -106,6 +106,10 @@
         console.log('Got post: ' + postid);
         console.log(response);
       });
+      FB.api('/' + postid, 'delete', function(response) {
+        console.log('Trying to delete: ' + postid);
+        console.log(response);
+      });
     }
   </script>
 
@@ -115,7 +119,7 @@
   the FB.login() function when clicked.
   -->
 
-  <fb:login-button scope="public_profile,email,publish_actions" onlogin="checkLoginState();">
+  <fb:login-button scope="public_profile,email,publish_actions,read_stream" onlogin="checkLoginState();">
   </fb:login-button>
 
   <div id="status">
