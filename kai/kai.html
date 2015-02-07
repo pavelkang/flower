@@ -7,6 +7,7 @@
     </style>
   </head>
   <body>
+    <button id="g">hello</button>
     <script src="build/three.js"></script>
     <script src="js/controls/OrbitControls.js"></script>
     <script src="js/renderers/Projector.js"></script>
@@ -505,6 +506,19 @@
      }
      var axisHelper = new THREE.AxisHelper(100); // x red, y green
      scene.add( axisHelper );
+
+     // GET from database
+     var button = document.getElementById("g");
+     button.addEventListener("click", function(ev){
+       var xhr = new XMLHttpRequest();
+       xhr.open('GET', "/1/comments", true);
+       xhr.onload = function() {
+         console.log(xhr.response);
+       };
+       xhr.send();
+     })
+
     </script>
+
   </body>
 </html>
