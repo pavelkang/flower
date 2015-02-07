@@ -1,4 +1,5 @@
-import os
+import os, json
+from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for
 from flask.ext.sqlalchemy import SQLAlchemy
 
@@ -18,6 +19,9 @@ class Rose(db.Model):
   comments = db.Column(db.String(2**30))
   date = db.Column(db.DateTime())
   
+  def __init__(self):
+    self.date = datetime.utcnow()
+
   def __str__(self):
     return "%s: " + ", ".join(self.comments.split("|"))
 
@@ -27,6 +31,14 @@ db.create_all()
 @app.route("/")
 def home():
   return render_template("index.html")
+
+@app.route("/createRose")
+def createRose():
+  rose = Rose()
+  db.session.add(rose)
+  db.session.commit()
+  return json.dumps(rose.ID)
+
 
 if __name__ == "__main__":
   app.run(port = PORT)
