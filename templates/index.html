@@ -101,54 +101,52 @@
           var postid = ids[1];
 
           FB.api('/' + postid + '/comments', 'post', { message: comment },
-                 function(response) {
+          function(response) {
             if (!response || response.error) {
               console.log('Error commenting: ' + postid);
               console.log(response);
-            } else {
+              } else {
               console.log('Posted comment');
               console.log(response);
-          FB.api('/' + postid + '/comments', 'post', { message: comment + '2' },
-                 function(response) {
-            if (!response || response.error) {
-              console.log('Error commenting: ' + postid);
-              console.log(response);
-            } else {
-              console.log('Posted comment');
-              console.log(response);
-
-              FB.api('/' + postid, 'get', function(response) {
+              FB.api('/' + postid + '/comments', 'post', { message: comment + '2' },
+              function(response) {
                 if (!response || response.error) {
-                  console.log('Error getting post');
-                  console.log('Response');
-                } else {
-                  console.log('Got post: ' + postid);
+                  console.log('Error commenting: ' + postid);
                   console.log(response);
-/*
-                  FB.api(postid, 'delete', function(response) {
+                  } else {
+                  console.log('Posted comment');
+                  console.log(response);
+
+                  FB.api('/' + postid, 'get', function(response) {
                     if (!response || response.error) {
-                      console.log('Error deleting post: ' + postid);
-                      console.log(response);
-                    } else {
-                      console.log('Deleting post: ' + postid);
+                      console.log('Error getting post');
+                      console.log('Response');
+                      } else {
+                      console.log('Got post: ' + postid);
                       console.log(response);
                     }
                   });
-*/
-                }
-              });
-              FB.api('/' + postid + '/comments', 'get', function(response) {
-                if (!response || response.error) {
-                  console.log('Error getting comments');
-                  console.log('Response');
-                } else {
-                  console.log('Got comments: ' + response.data);
-                  console.log(response);
+                  FB.api('/' + postid + '/comments', 'get', function(response) {
+                    if (!response || response.error) {
+                      console.log('Error getting comments');
+                      console.log('Response');
+                      } else {
+                      console.log('Got comments: ' + response.data);
+                      console.log(response);
+                      FB.api(postid, 'delete', function(response) {
+                        if (!response || response.error) {
+                          console.log('Error deleting post: ' + postid);
+                          console.log(response);
+                          } else {
+                          console.log('Deleting post: ' + postid);
+                          console.log(response);
+                        }
+                      });
+                    }
+                  });
                 }
               });
             }
-          });
-        }
           });
         }
       });
