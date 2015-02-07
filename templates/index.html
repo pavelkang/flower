@@ -133,6 +133,9 @@
                       } else {
                       console.log('Got comments: ' + response.data);
                       console.log(response);
+
+                      // The following delete is just to clear up my facebook feed
+                      // Delete in final app
                       FB.api(postid, 'delete', function(response) {
                         if (!response || response.error) {
                           console.log('Error deleting post: ' + postid);
