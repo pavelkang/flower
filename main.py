@@ -32,7 +32,10 @@ class Rose(db.Model):
   def __str__(self):
     return "%s: " + ", ".join(self.comments.split("|"))
 
-db.create_all()
+try:
+  db.create_all()
+except:
+  pass
   
 # routing
 @app.route("/")
