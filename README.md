@@ -30,3 +30,23 @@ Method: POST
 Returns: number
 
 Comment: A POST request to /createRose creates a rose object in the database and returns the id of the object created for future requests to this API.
+
+### Get Comments
+
+URL: /(roseid)/comments
+
+Method: GET
+
+Returns: string list
+
+Comment: A GET request to /(roseid)/comments returns a list of comments as strings associated with the particular roseid.
+
+### Add Comment
+
+URL: /(roseid)/addComment
+
+Method: POST
+
+Returns: bool
+
+Comment: A POST request to /(roseid)/addComment must include a "comment" parameter in order to be valid. Failure to do so triggers a 400-level HTTP error. A valid request attempts to add the value of the "comment" parameter to the database for the particular roseid. It returns a bool describing whether the operation succeeded.
