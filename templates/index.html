@@ -119,7 +119,7 @@
               }
             });
             */
-            FB.api('/' + postid '/comments', 'post', { message: comment },
+            FB.api('/' + postid + '/comments', 'post', { message: comment },
                    function(response) {
               if (!response || response.error) {
                 console.log('Error commenting: ' + postid);
