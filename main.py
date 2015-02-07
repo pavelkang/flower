@@ -43,6 +43,10 @@ def home():
 def test():
   return render_template("index2.html")
   
+@app.route("/index3.html")
+def test():
+  return render_template("index3.html")
+
 @app.route("/createRose", methods=["POST"])
 def createRose():
   rose = Rose()
