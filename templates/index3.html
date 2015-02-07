@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>
+    Facebook Login Test
+  </title>
+</head>
+
+<body style='background-color: pink'>
+<script src='../static/js/all.js'>
+
+  <!--
+  Below we include the Login Button social plugin. This button uses
+  the JavaScript SDK to present a graphical Login button that triggers
+  the FB.login() function when clicked.
+  -->
+
+  <fb:login-button scope="public_profile,email,publish_actions,read_stream" onlogin="checkLoginState();">
+  </fb:login-button>
+
+  <div id="status">
+
+</body>
+</html>
