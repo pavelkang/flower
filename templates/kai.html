@@ -14,7 +14,6 @@
     <script src="{{url_for("static", filename="js/CanvasRenderer.js")}}"></script>
     <script src="{{url_for("static", filename="js/Bird.js")}}"></script>
     <script src="http://mrdoob.github.com/three.js/examples/fonts/helvetiker_regular.typeface.js"></script>
-    <script src="{{url_for("static", filename="js/domevent.js")}}"></script>
     <audio src="{{url_for("static", filename="music/canon.mp3")}}" autoplay loop></audio>
     <audio id="chirp" src="{{url_for("static", filename="music/chirp.wav")}}" autoplay loop volume="0"></audio>
     <script>
@@ -300,7 +299,7 @@
      vid.volume = 0.2;
      var startDate = new Date().getTime();
      var textMesh2, flower;
-     var FS = 0.05, BS = 1, TS = 3, V=0.05, TTS=0.001;
+     var FS = 0.05, BS = 1, TS = 3, V=0.05, TTS=0.0005;
      var scene, camera, renderer, controls, texture_placeholder, birds, bird;
      var boid, boids;
      var textureFlare0, textureFlare2, textureFlare3;
