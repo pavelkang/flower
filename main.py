@@ -39,11 +39,9 @@ db.create_all()
 def home():
   return render_template("index.html")
 
-<<<<<<< HEAD
 @app.route("/index2.html")
 def test():
   return render_template("index2.html")
-=======
 @app.route("/createRose", methods=["POST"])
 def createRose():
   rose = Rose()
@@ -70,7 +68,6 @@ def getComments(roseid):
   else:
     commentsList = str(rose.comments[:-1]).split("|")
   return json.dumps(commentsList)
->>>>>>> ac4ca232b34e6f91852c2745aef2b8ed33568607
 
 if __name__ == "__main__":
   app.run(port = PORT)
