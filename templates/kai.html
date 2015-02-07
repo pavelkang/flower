@@ -316,7 +316,7 @@
        loadTexture( '{{url_for("static", filename="img/topax2.jpg")}}' ), // top
        loadTexture( '{{url_for("static", filename="img/topax3.jpg")}}' ), // bottom
        loadTexture( '{{url_for("static", filename="img/frontax2.jpg")}}' ), // front
-       loadTexture( '{{url_for("static", filename="img/backax2.jpg")}}' )  // back      
+       loadTexture( '{{url_for("static", filename="img/backax2.jpg")}}' )  // back
      ];
      init();
      addText();
@@ -363,9 +363,9 @@
        var groundMat = new THREE.MeshBasicMaterial({map:grassTex});
        var groundGeo = new THREE.PlaneBufferGeometry(4000,4000);
        var ground = new THREE.Mesh(groundGeo,groundMat);
-       ground.position.y = -1.9; //lower it 
-       ground.rotation.x = -Math.PI/2; //-90 degrees around the xaxis 
-       //IMPORTANT, draw on both sides 
+       ground.position.y = -1.9; //lower it
+       ground.rotation.x = -Math.PI/2; //-90 degrees around the xaxis
+       //IMPORTANT, draw on both sides
        ground.doubleSided = true;
        scene.add(ground);
        // Create a renderer and add it to the DOM.
@@ -410,7 +410,7 @@
            map: THREE.ImageUtils.loadTexture('{{url_for("static", filename="img/wood.jpg")}}')
          });
          mesh = new THREE.Mesh(geometry, mat);
-         mesh.scale.x = TS; mesh.scale.y = TS; mesh.scale.z = TS; // scale         
+         mesh.scale.x = TS; mesh.scale.y = TS; mesh.scale.z = TS; // scale
          scene.add( mesh );
          animate();
        } );
@@ -519,7 +519,15 @@
      var button = document.getElementById("g");
      button.addEventListener("click", function(ev){
        var xhr = new XMLHttpRequest();
-       xhr.open('GET', "/1/comments", true);
+       var currUrl = document.URL;
+       var firstSlash = currUrl.indexOf(".com") + 4
+       if (firstSlash == 3) { // did not find, probably on localhost
+         firstSlash = currUrl.indexOf("/", currUrl.indexOf("localhost"))
+       }
+       var id = currUrl.substring(firstSlash+1, currUrl.indexOf("/", firstSlash+1))
+       console.log(currUrl[firstSlash]);
+       console.log(id);
+       xhr.open('GET', "/"+id+"/comments", true);
        xhr.onload = function() {
          console.log(xhr.response);
        };
