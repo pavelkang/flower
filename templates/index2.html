@@ -142,7 +142,7 @@ THIS IS THE ACTUAL INDEX FILE, REPLACE THE OLD ONE WHEN APPLICABLE
               console.log('0');
               for (var i = comments_count; i < n_comments_count; ++i) {
                 var xmlhttp = new XMLHttpRequest();
-                xmlhttp.onreadystatechange=function()
+                xmlhttp.onreadystatechange=function(response)
                 {
                   console.log('1');
                   if (xmlhttp.readyState==4 && xmlhttp.status==200) {
