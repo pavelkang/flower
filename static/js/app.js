@@ -76,41 +76,10 @@ function onLogin() {
     console.log('Successful login for: ' + response.name);
     document.getElementById('status').innerHTML =
     'Thanks for logging in, ' + response.name + '!';
-    postTopLevel();
-  });
-
-  // renderMFS();
-}
-
-function renderMFS() {
-  // First get the list of friends for this user with the Graph API
-  FB.api('/me/invitable_friends', function(response) {
-    var container = document.getElementById('mfs');
-    var mfsForm = document.createElement('form');
-    container.style = 'width:500px; height:500px;'
-    mfsForm.id = 'mfsForm';
-
-  console.log(response);
-
-  // Iterate through the array of friends object and create a checkbox for each one.
-  for(var i = 0; i < response.data.length; i++) {
-    var friendItem = document.createElement('div');
-    friendItem.id = 'friend_' + response.data[i].id;
-    friendItem.innerHTML = '<input type="radio" name="friends" value=false'
-    + response.data[i].id
-    + '" />' + response.data[i].name;
-  mfsForm.appendChild(friendItem);
-  }
-  container.appendChild(mfsForm);
-
-  // Create a button to send the Request(s)
-  var sendButton = document.createElement('input');
-  sendButton.type = 'button';
-  sendButton.value = 'Post Rose Gram!';
-  sendButton.onclick = postTopLevel;
-  container.appendChild(sendButton);
   });
 }
+
+document.getElementById('postbutton').addEventListener("click", postTopLevel);
 
 var comments_count = 0; 
 
@@ -157,18 +126,6 @@ function monitorCommentsOnPost(postid)
 
 // Post top level thread for the rosegram
 function postTopLevel() {
-  // var friendID = null;
-  // var friends = document.getElementById('mfsForm');
-  // for(var i = 0; i < friends.length; i++) {
-  //   if(friends[i].checked == true) {
-  //     friendId = friends[i].value;
-  //   }
-  // }
-
-  // if (!friendID) {
-  //   console.log('No friend selected!');
-  //   // Do some UI thing
-  // } else {
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.onreadystatechange=function()
   {
