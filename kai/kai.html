@@ -9,7 +9,10 @@
   <body>
     <script src="build/three.js"></script>
     <script src="js/controls/OrbitControls.js"></script>
+    <script src="http://mrdoob.github.com/three.js/examples/fonts/helvetiker_regular.typeface.js"></script>
     <script>
+     var startDate = new Date().getTime();
+     var textMesh2;
      var FS = 0.05, BS = 0.7;
      var scene, camera, renderer, controls, texture_placeholder;
      var textureFlare0, textureFlare2, textureFlare3;
@@ -28,6 +31,7 @@
 	 loadTexture( 'skybox/backax2.jpg' )  // back      
      ];
      init();
+     addText();
      animate();
      function init() {
        // Create the scene and set the scene size.
@@ -131,11 +135,6 @@
 	 scene.add(tree);
        });
      }
-     function animate() {
-       requestAnimationFrame(animate);
-       renderer.render(scene, camera);
-       controls.update();
-     }
      function addLight( h, s, l, x, y, z ) {
        var light = new THREE.PointLight( 0xffffff, 1.5, 4500 );
        light.color.setHSL( h, s, l );
@@ -184,6 +183,34 @@
      var axisHelper = new THREE.AxisHelper(100); // x red, y green
      scene.add( axisHelper );
 
+     function addText() {
+      // Adding text
+      var material2 = new THREE.MeshPhongMaterial({
+          color: 0x00ff00
+      });
+      var textGeom2 = new THREE.TextGeometry( 'Hello, World!', {
+         font: 'helvetiker'
+          // size: 60, height: 20, curveSegments: 3,
+          // font: 'helvetiker', weight: 'normal',
+          // bevelThickness: 3, bevelSize: 3, bevelEnabled: true
+      });
+      textMesh2 = new THREE.Mesh( textGeom2, material2 );
+
+      textGeom2.computeBoundingBox();
+      var textWidth2 = textGeom2.boundingBox.max.x - textGeom2.boundingBox.min.x;
+
+      textMesh2.position.set( -0.5 * textWidth2, 0, 0 );
+      scene.add( textMesh2 );
+
+      textMesh2.material.transparent = true;
+     }
+
+     function animate() {
+       requestAnimationFrame(animate);
+       renderer.render(scene, camera);
+       controls.update();
+       textMesh2.material.opacity = Math.max(0, 1 - (1.0 / 5000.0) * (new Date().getTime() - startDate));
+     }
     </script>
   </body>
 </html>
