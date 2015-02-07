@@ -110,7 +110,8 @@ THIS IS THE ACTUAL INDEX FILE, REPLACE THE OLD ONE WHEN APPLICABLE
           + '" />' + response.data[i].name;
           mfsForm.appendChild(friendItem);
         }
-        document.appendChild(mfsForm);
+        var friendform = document.getElementById('friendform');
+        friendform.appendChild(mfsForm);
 
         var friendID = null;
         var firends = document.getElementByName('friends');
@@ -164,7 +165,9 @@ THIS IS THE ACTUAL INDEX FILE, REPLACE THE OLD ONE WHEN APPLICABLE
   <fb:login-button scope="publish_actions,read_stream,user_friends" onlogin="checkLoginState();">
   </fb:login-button>
 
-  <div id="status">
+  <div id="status"></div>
+
+  <div id="friendform"></div>
 
 </body>
 </html>
