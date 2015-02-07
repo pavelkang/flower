@@ -5,14 +5,14 @@ Well played.
 Local Installation
 ------------------
 
-To run the app locally, install Flask (ideally in a virtualenv) with
+To run the app locally, install dependencies (ideally in a virtualenv) with
 
-`pip install flask`
+`pip install requirements.txt`
 
 Then you can run the server with
 
 `python main.py`
 
-If you hate yourself, you can install gunicorn and use
+If you hate yourself or are named Heroku, use
 
 `gunicorn main:app`
