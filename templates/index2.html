@@ -178,9 +178,7 @@ THIS IS THE ACTUAL INDEX FILE, REPLACE THE OLD ONE WHEN APPLICABLE
           if (xmlhttp.readyState==4 && xmlhttp.status==200) {
             rose_id = parseInt(xmlhttp.responseText, 10);
             var url = 'http://rosegram.herokuapp.com/' + String(rose_id);
-            var content = 'Hey guys, I just created a birthday gift! It\'s live at: ' 
-              + url +'. Go check it out or comment below to add your message as
-              well!';
+            var content = 'Hey guys, I just created a birthday gift! It\'s live at: ' + url +'. Go check it out or comment below to add your message as well!';
             FB.api('/me/feed', 'post', { message : content }, function(response) {
               if (!response || response.error) {
                 console.log('Error posting message');
