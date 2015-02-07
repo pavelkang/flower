@@ -5,7 +5,10 @@ from flask.ext.sqlalchemy import SQLAlchemy
 
 # app configuration
 app = Flask(__name__)
-DBURI = "sqlite:///roses.db"
+if os.environ.get("ON_HEROKU", False):
+  DBURI = "sqlite:////tmp/roses.db"
+else:
+  DBURI = "sqlite:///roses.db"
 # TODO: put a MYSQL DB URI here later
 app.config["SQLALCHEMY_DATABASE_URI"] = DBURI
 app.debug = True
