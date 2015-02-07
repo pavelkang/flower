@@ -9,6 +9,7 @@
   <body>
     <script src="build/three.js"></script>
     <script src="js/controls/OrbitControls.js"></script>
+    <script src="http://mrdoob.github.com/three.js/examples/fonts/helvetiker_regular.typeface.js"></script>
     <script>
      var FS = 0.05, BS = 0.7;
      var scene, camera, renderer, controls, texture_placeholder;
@@ -183,6 +184,27 @@
 
      var axisHelper = new THREE.AxisHelper(100); // x red, y green
      scene.add( axisHelper );
+
+     // Adding text
+     var material2 = new THREE.MeshPhongMaterial({
+         color: 0x00ff00
+     });
+     var textGeom2 = new THREE.TextGeometry( 'Hello, World!', {
+        font: 'helvetiker'
+         // size: 60, height: 20, curveSegments: 3,
+         // font: 'helvetiker', weight: 'normal',
+         // bevelThickness: 3, bevelSize: 3, bevelEnabled: true
+     });
+     var textMesh2 = new THREE.Mesh( textGeom2, material2 );
+
+     textGeom2.computeBoundingBox();
+     var textWidth2 = textGeom2.boundingBox.max.x - textGeom2.boundingBox.min.x;
+     
+     textMesh2.position.set( -0.5 * textWidth2, 0, 0 );
+     scene.add( textMesh2 );
+
+     textMesh2.material.transparent = true;
+     textMesh2.material.opacity = 0.5 + 0.5*Math.sin(new Date().getTime() * .0025);
 
     </script>
   </body>
