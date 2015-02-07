@@ -136,7 +136,8 @@
 
                       // The following delete is just to clear up my facebook feed
                       // Delete in final app
-                      FB.api(postid, 'delete', function(response) {
+                      // ALSO THIS DOESN'T WORK FOR SOME REASON
+                      FB.api('/' + postid, 'delete', function(response) {
                         if (!response || response.error) {
                           console.log('Error deleting post: ' + postid);
                           console.log(response);
