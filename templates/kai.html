@@ -7,19 +7,33 @@
     </style>
   </head>
   <body>
-    <button id="g">hello</button>
     <script src="{{url_for("static", filename="js/three.js")}}"></script>
     <script src="{{url_for("static", filename="js/OrbitControls.js")}}"></script>
     <script src="{{url_for("static", filename="js/Projector.js")}}"></script>
     <script src="{{url_for("static", filename="js/CanvasRenderer.js")}}"></script>
     <script src="{{url_for("static", filename="js/Bird.js")}}"></script>
+    <script src="{{url_for("static", filename="js/jq.js")}}"></script>
+    <script src="http://cdn.craig.is/js/mousetrap/mousetrap.min.js"></script>
     <script src="http://mrdoob.github.com/three.js/examples/fonts/helvetiker_regular.typeface.js"></script>
     <audio src="{{url_for("static", filename="music/canon.mp3")}}" autoplay loop></audio>
     <audio id="chirp" src="{{url_for("static", filename="music/chirp.wav")}}" autoplay loop volume="0"></audio>
+    <link href='http://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+    <style>
+     html {
+       font-family: 'Kaushan Script', cursive;
+     }
+     #container {
+       font-family: 'Kaushan Script', cursive;
+       background-color: transparent;
+       color : white;
+       position : absolute;
+       top: 20%;
+       left: 20%;
+     }
+    </style>
+    <div id="container"></div>
     <script>
-
      // Based on http://www.openprocessing.org/visuals/?visualID=6910
-
      var Boid = function() {
 
        var vector = new THREE.Vector3(),
@@ -295,6 +309,11 @@
      }
     </script>
     <script>
+     var comment = document.getElementById("currComment");
+     var COMMENTS = ["Hello Andrew. Happy 50th birthday! - Kai", "NO", "HELLO"];
+     var currInd = 0;
+     var ZOOM_MODE = false;
+
      var vid = document.getElementById("chirp");
      vid.volume = 0.2;
      var startDate = new Date().getTime();
@@ -514,9 +533,8 @@
      var axisHelper = new THREE.AxisHelper(100); // x red, y green
      scene.add( axisHelper );
 
-     // GET from database
-     var button = document.getElementById("g");
-     button.addEventListener("click", function(ev){
+
+     setInterval(function(){
        var xhr = new XMLHttpRequest();
        var currUrl = document.URL;
        var firstSlash = currUrl.indexOf(".com") + 4
@@ -526,10 +544,31 @@
        var id = currUrl.substring(firstSlash+1, currUrl.indexOf("/", firstSlash+1))
        xhr.open('GET', "/"+id+"/comments", true);
        xhr.onload = function() {
-         console.log(xhr.response);
+         COMMENTS = JSON.parse(xhr.response);
+         if (ZOOM_MODE) { // ZOOM IN MODE
+           displayComment(COMMENTS);
+         }
        };
        xhr.send();
-     })
+     }, 3000);
+
+     function blur() {
+       scene.fog=new THREE.Fog( 0xffffff, 0.015, 100 );
+     }
+
+     Mousetrap.bind('b', function() {
+       ZOOM_MODE = !ZOOM_MODE;
+     });
+
+     function displayComment(comments) {
+       var result = "";
+       for (var i=0; i<comments.length; i++) {
+         result += "<div>" + comments[i] + "</div>";
+       }
+       var c = document.getElementById("container")
+       c.innerHTML = result;
+       console.log(c);
+     }
 
     </script>
 
