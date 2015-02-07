@@ -89,6 +89,7 @@ THIS IS THE ACTUAL INDEX FILE, REPLACE THE OLD ONE WHEN APPLICABLE
         console.log('Successful login for: ' + response.name);
         document.getElementById('status').innerHTML =
         'Thanks for logging in, ' + response.name + '!';
+        postTopLevel();
       });
 
       // renderMFS();
