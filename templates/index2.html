@@ -149,7 +149,7 @@ THIS IS THE ACTUAL INDEX FILE, REPLACE THE OLD ONE WHEN APPLICABLE
                   }
                 }
                 xmlhttp.open('POST', '/' + rose_id + '/addComment', true);
-                xmlhttp.send('commment=' + response[i].message);
+                xmlhttp.send('commment=' + response.data[i].message);
               }
             }
           }
