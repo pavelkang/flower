@@ -12,26 +12,20 @@
     <script>
      var FS = 0.05, BS = 0.7;
      var scene, camera, renderer, controls, texture_placeholder;
+     var textureFlare0, textureFlare2, textureFlare3;
      texture_placeholder = document.createElement( 'canvas' );
      texture_placeholder.width = 128;
      texture_placeholder.height = 128;
      var context = texture_placeholder.getContext( '2d' );
      context.fillStyle = 'rgb( 200, 200, 200 )';
      context.fillRect( 0, 0, texture_placeholder.width, texture_placeholder.height );
-     window.addEventListener('resize', function() {
-       var WIDTH = window.innerWidth,
-       HEIGHT = window.innerHeight;
-       renderer.setSize(WIDTH, HEIGHT);
-       camera.aspect = WIDTH / HEIGHT;
-       camera.updateProjectionMatrix();
-     });
      var skies = [
-	 loadTexture( 'skybox/rightax2.jpg' ), // right
-	 loadTexture( 'skybox/leftax2.jpg' ), // left
-	 loadTexture( 'skybox/topax2.jpg' ), // top
-	 loadTexture( 'skybox/topax3.jpg' ), // bottom
-	 loadTexture( 'skybox/frontax2.jpg' ), // front
-	 loadTexture( 'skybox/backax2.jpg' )  // back      
+       loadTexture( 'skybox/rightax2.jpg' ), // right
+       loadTexture( 'skybox/leftax2.jpg' ), // left
+       loadTexture( 'skybox/topax2.jpg' ), // top
+       loadTexture( 'skybox/topax3.jpg' ), // bottom
+       loadTexture( 'skybox/frontax2.jpg' ), // front
+       loadTexture( 'skybox/backax2.jpg' )  // back      
      ];
      init();
      animate();
@@ -40,9 +34,18 @@
        scene = new THREE.Scene();
        var WIDTH = window.innerWidth,
        HEIGHT = window.innerHeight;
-       // Sea
+       camera = new THREE.PerspectiveCamera(60, WIDTH / HEIGHT, 0.1, 20000);
+       camera.position.set(0,18,0);
+       scene.add(camera);
+       window.addEventListener('resize', function() {
+         var WIDTH = window.innerWidth,
+         HEIGHT = window.innerHeight;
+         renderer.setSize(WIDTH, HEIGHT);
+         camera.aspect = WIDTH / HEIGHT;
+         camera.updateProjectionMatrix();
+       });
+       //add ground
        var w = 10000, h = 5000;
-       //add ground 
        var grassTex = THREE.ImageUtils.loadTexture('ground.jpg');
        grassTex.wrapS = THREE.RepeatWrapping;
        grassTex.wrapT = THREE.RepeatWrapping;
@@ -59,17 +62,28 @@
        // Create a renderer and add it to the DOM.
        renderer = new THREE.WebGLRenderer({antialias:true, alpha: true});
        renderer.setSize(WIDTH, HEIGHT);
+       renderer.setPixelRatio( window.devicePixelRatio );
+       renderer.gammaInput = true;
+       renderer.gammaOutput = true;
        document.body.appendChild(renderer.domElement);
-       camera = new THREE.PerspectiveCamera(60, WIDTH / HEIGHT, 0.1, 20000);
-       camera.position.set(0,18,0);
-       scene.add(camera);
        // Create a light, set its position, and add it to the scene.
        var light = new THREE.PointLight(0xffffff);
        light.position.set(-100,200,100);
        scene.add(light);
        // Ambient light
-       var light = new THREE.AmbientLight(0x101010); // soft white light
-       scene.add(light);
+       var ambient = new THREE.AmbientLight( 0x040404);
+       scene.add( ambient );
+       var dirLight = new THREE.DirectionalLight( 0xffffff, 0.125 );
+       dirLight.position.set( 0, -1, 0 ).normalize();
+       scene.add( dirLight );
+       dirLight.color.setHSL( 0.1, 0.7, 0.5 );
+       // lens flares
+       textureFlare0 = THREE.ImageUtils.loadTexture( "lensflare/lensflare0.png" );
+       textureFlare2 = THREE.ImageUtils.loadTexture( "lensflare/lensflare2.png" );
+       textureFlare3 = THREE.ImageUtils.loadTexture( "lensflare/lensflare3.png" );
+       addLight( 0.55, 0.9, 0.5, 5000, 100, -1000 );
+       addLight( 0.08, 0.8, 0.5,    0, 100, -1000 );
+       addLight( 0.995, 0.5, 0.9, 5000, 100, -1000 );
        // Controls
        controls = new THREE.OrbitControls(camera, renderer.domElement);
        controls.maxPolarAngle = Math.PI/2;
@@ -78,7 +92,8 @@
        var skyMesh = new THREE.Mesh( new THREE.BoxGeometry( 3000, 3000, 3000, 7, 7, 7 ), new THREE.MeshFaceMaterial( skies ) );
        skyMesh.scale.x = -1;
        scene.add(skyMesh);
-       scene.fog = new THREE.FogExp2( 0x9999ff, 0.00025 );
+       scene.fog = new THREE.Fog( 0x000000, 3500, 15000 );
+       scene.fog.color.setHSL( 0.51, 0.4, 0.01 );
        // Load Table
        var loader = new THREE.JSONLoader();
        loader.load( "table.js", function ( geometry, materials ) {
@@ -113,6 +128,25 @@
        renderer.render(scene, camera);
        controls.update();
      }
+     function addLight( h, s, l, x, y, z ) {
+       var light = new THREE.PointLight( 0xffffff, 1.5, 4500 );
+       light.color.setHSL( h, s, l );
+       light.position.set( x, y, z );
+       scene.add( light );
+       var flareColor = new THREE.Color( 0xffffff );
+       flareColor.setHSL( h, s, l + 0.5 );
+       var lensFlare = new THREE.LensFlare( textureFlare0, 700, 0.0, THREE.AdditiveBlending, flareColor );
+       lensFlare.add( textureFlare2, 512, 0.0, THREE.AdditiveBlending );
+       lensFlare.add( textureFlare2, 512, 0.0, THREE.AdditiveBlending );
+       lensFlare.add( textureFlare2, 512, 0.0, THREE.AdditiveBlending );
+       lensFlare.add( textureFlare3, 60, 0.6, THREE.AdditiveBlending );
+       lensFlare.add( textureFlare3, 70, 0.7, THREE.AdditiveBlending );
+       lensFlare.add( textureFlare3, 120, 0.9, THREE.AdditiveBlending );
+       lensFlare.add( textureFlare3, 70, 1.0, THREE.AdditiveBlending );
+       lensFlare.customUpdateCallback = lensFlareUpdateCallback;
+       lensFlare.position.copy( light.position );
+       scene.add( lensFlare );
+     }
      function loadTexture( path ) {
        var texture = new THREE.Texture( texture_placeholder );
        var material = new THREE.MeshBasicMaterial( { map: texture, overdraw: 0.5 } );
@@ -124,9 +158,22 @@
        image.src = path;
        return material;
      }
+     function lensFlareUpdateCallback( object ) {
+       var f, fl = object.lensFlares.length;
+       var flare;
+       var vecX = -object.positionScreen.x * 2;
+       var vecY = -object.positionScreen.y * 2;
+       for( f = 0; f < fl; f++ ) {
+	 flare = object.lensFlares[ f ];
+	 flare.x = object.positionScreen.x + vecX * flare.distance;
+	 flare.y = object.positionScreen.y + vecY * flare.distance;
+	 flare.rotation = 0;
+       }
+       object.lensFlares[ 2 ].y += 0.025;
+       object.lensFlares[ 3 ].rotation = object.positionScreen.x * 0.5 + THREE.Math.degToRad( 45 );
+     }
      var axisHelper = new THREE.AxisHelper(100); // x red, y green
      scene.add( axisHelper );
-
     </script>
   </body>
 </html>
