@@ -1,0 +1,132 @@
+<html>
+  <head>
+    <title>My first Three.js app</title>
+    <style>
+     body { margin: 0; }
+     canvas { width: 100%; height: 100% }
+    </style>
+  </head>
+  <body>
+    <script src="build/three.js"></script>
+    <script src="js/controls/OrbitControls.js"></script>
+    <script>
+     var FS = 0.05, BS = 0.7;
+     var scene, camera, renderer, controls, texture_placeholder;
+     texture_placeholder = document.createElement( 'canvas' );
+     texture_placeholder.width = 128;
+     texture_placeholder.height = 128;
+     var context = texture_placeholder.getContext( '2d' );
+     context.fillStyle = 'rgb( 200, 200, 200 )';
+     context.fillRect( 0, 0, texture_placeholder.width, texture_placeholder.height );
+     window.addEventListener('resize', function() {
+       var WIDTH = window.innerWidth,
+       HEIGHT = window.innerHeight;
+       renderer.setSize(WIDTH, HEIGHT);
+       camera.aspect = WIDTH / HEIGHT;
+       camera.updateProjectionMatrix();
+     });
+     var skies = [
+	 loadTexture( 'skybox/rightax2.jpg' ), // right
+	 loadTexture( 'skybox/leftax2.jpg' ), // left
+	 loadTexture( 'skybox/topax2.jpg' ), // top
+	 loadTexture( 'skybox/topax3.jpg' ), // bottom
+	 loadTexture( 'skybox/frontax2.jpg' ), // front
+	 loadTexture( 'skybox/backax2.jpg' )  // back      
+     ];
+     init();
+     animate();
+     function init() {
+       // Create the scene and set the scene size.
+       scene = new THREE.Scene();
+       var WIDTH = window.innerWidth,
+       HEIGHT = window.innerHeight;
+       // Sea
+       var w = 10000, h = 5000;
+       //add ground 
+       var grassTex = THREE.ImageUtils.loadTexture('ground.jpg');
+       grassTex.wrapS = THREE.RepeatWrapping;
+       grassTex.wrapT = THREE.RepeatWrapping;
+       grassTex.repeat.x = 1;
+       grassTex.repeat.y = 1;
+       var groundMat = new THREE.MeshBasicMaterial({map:grassTex});
+       var groundGeo = new THREE.PlaneGeometry(4000,4000);
+       var ground = new THREE.Mesh(groundGeo,groundMat);
+       ground.position.y = -1.9; //lower it 
+       ground.rotation.x = -Math.PI/2; //-90 degrees around the xaxis 
+       //IMPORTANT, draw on both sides 
+       ground.doubleSided = true;
+       scene.add(ground);
+       // Create a renderer and add it to the DOM.
+       renderer = new THREE.WebGLRenderer({antialias:true, alpha: true});
+       renderer.setSize(WIDTH, HEIGHT);
+       document.body.appendChild(renderer.domElement);
+       camera = new THREE.PerspectiveCamera(60, WIDTH / HEIGHT, 0.1, 20000);
+       camera.position.set(0,18,0);
+       scene.add(camera);
+       // Create a light, set its position, and add it to the scene.
+       var light = new THREE.PointLight(0xffffff);
+       light.position.set(-100,200,100);
+       scene.add(light);
+       // Ambient light
+       var light = new THREE.AmbientLight(0x101010); // soft white light
+       scene.add(light);
+       // Controls
+       controls = new THREE.OrbitControls(camera, renderer.domElement);
+       controls.maxPolarAngle = Math.PI/2;
+       controls.target.y = 6;
+       // Skybox and Fog
+       var skyMesh = new THREE.Mesh( new THREE.BoxGeometry( 3000, 3000, 3000, 7, 7, 7 ), new THREE.MeshFaceMaterial( skies ) );
+       skyMesh.scale.x = -1;
+       scene.add(skyMesh);
+       scene.fog = new THREE.FogExp2( 0x9999ff, 0.00025 );
+       // Load Table
+       var loader = new THREE.JSONLoader();
+       loader.load( "table.js", function ( geometry, materials ) {
+         var mat = new THREE.MeshLambertMaterial({
+           map: THREE.ImageUtils.loadTexture('wood.jpg')
+         });
+         mesh = new THREE.Mesh(geometry, mat);
+         mesh.scale.x = 2; mesh.scale.y = 2; mesh.scale.z = 2; // scale         
+         scene.add( mesh );
+         animate();
+       } );
+       // Load flower
+       var flowerLoader = new THREE.JSONLoader();
+       loader.load("red.js", function (geom, mater) {
+	 var flower = new THREE.Mesh( geom, new THREE.MeshFaceMaterial(mater));
+         flower.scale.x = FS; flower.scale.y = FS; flower.scale.z = FS;
+         flower.position.y = 6; flower.position.z = 0; flower.position.x=0;
+         flower.rotation.x = -Math.PI / 2;
+	 scene.add(flower);
+       });
+       // Load book
+       var bookLoader = new THREE.JSONLoader();
+       loader.load("book.js", function (geom, mater) {
+	 var book = new THREE.Mesh( geom, new THREE.MeshFaceMaterial(mater));
+         book.scale.x = BS; book.scale.y = BS; book.scale.z = BS;
+         book.position.y = 2.3; book.position.z = 1; book.position.x=-1;
+	 scene.add(book);
+       });
+     }
+     function animate() {
+       requestAnimationFrame(animate);
+       renderer.render(scene, camera);
+       controls.update();
+     }
+     function loadTexture( path ) {
+       var texture = new THREE.Texture( texture_placeholder );
+       var material = new THREE.MeshBasicMaterial( { map: texture, overdraw: 0.5 } );
+       var image = new Image();
+       image.onload = function () {
+	 texture.image = this;
+	 texture.needsUpdate = true;
+       };
+       image.src = path;
+       return material;
+     }
+     var axisHelper = new THREE.AxisHelper(100); // x red, y green
+     scene.add( axisHelper );
+
+    </script>
+  </body>
+</html>
