@@ -110,8 +110,7 @@ THIS IS THE ACTUAL INDEX FILE, REPLACE THE OLD ONE WHEN APPLICABLE
           + '" />' + response.data[i].name;
           mfsForm.appendChild(friendItem);
         }
-        var friendform = document.getElementById('friendform');
-        friendform.appendChild(mfsForm);
+        container.appendChild(mfsForm);
 
         var friendID = null;
         var firends = document.getElementByName('friends');
@@ -121,7 +120,6 @@ THIS IS THE ACTUAL INDEX FILE, REPLACE THE OLD ONE WHEN APPLICABLE
           }
         }
 
-        var friendID = null;//deleteme
         // Create a button to send the Request(s)
         var sendButton = document.createElement('input');
         sendButton.type = 'button';
@@ -167,7 +165,7 @@ THIS IS THE ACTUAL INDEX FILE, REPLACE THE OLD ONE WHEN APPLICABLE
 
   <div id="status"></div>
 
-  <div id="friendform"></div>
+  <div id="mfs"></div>
 
 </body>
 </html>
