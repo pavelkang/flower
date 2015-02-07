@@ -26,5 +26,9 @@ db.create_all()
 def home():
   return render_template("index.html")
 
+@app.route("/index2.html")
+def test():
+  return render_template("index2.html")
+
 if __name__ == "__main__":
   app.run(port = PORT)
